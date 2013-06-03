@@ -1,0 +1,67 @@
+<head>
+<body>
+	<div id="errormessage"></div>
+	<form>
+		<textarea id="source" rows=15 cols = 120>
+{ 
+	"zune": 
+	{
+		"thing": 3 
+	}
+}
+		</textarea><br>
+		<textarea id="transform" rows=15 cols = 120>
+{
+	"fred": "#>thing",
+        "george": "#>zune",
+        "mildred": [ "ddd", "#.zune", "#>thing"],
+        "complexo": {
+            "ref": ">zune",
+            "id": "z",
+            "transform": {
+              "x": "#!z .thing"
+            }
+        }
+}
+		</textarea><br>
+		<input type="submit">
+	</form>
+	<pre>
+<div id="result"></div>
+	</pre>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.js"></script>
+
+	<script type="text/javascript" src="bOTL.js"></script>
+	<script type="text/javascript" src="testbOTL.js"></script>
+
+	<script>
+	$("form").submit(
+		function (e) 
+		{
+			e.preventDefault();
+			$("#errormessage").text("");
+			var lfunction;
+			try
+			{
+				lfunction = "doing tests";
+				bOTL_doall_tests()
+				lfunction = "parsing source";
+				var lsource = JSON.parse($("#source")[0].value);
+				lfunction = "parsing transform";
+				var ltransform = JSON.parse($("#transform")[0].value);
+				lfunction = "calling Transform";
+				lresult = Transform(lsource, ltransform, null);
+				lfunction = "stringifying Result";
+				$("#result").text(JSON.stringify(lresult, null, 4));
+			}
+			catch (err)
+			{
+				$("#errormessage").text("Error " + lfunction + ": " + err);
+			}
+		}
+	);
+	</script>
+</body>
+</html>
+
